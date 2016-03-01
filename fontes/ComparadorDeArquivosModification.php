@@ -7,7 +7,7 @@ function escreveXML($sPath, $iRow, $sConteudo) {
             $oXmlWriter = new XMLWriter();
             $oXmlWriter->openMemory();
             $oXmlWriter->setIndent(true);
-            $oXmlWriter->startDocument('1.0','ISO-8859-1');
+            $oXmlWriter->startDocument('1.0', 'ISO-8859-1');//'UTF-8');
             $oXmlWriter->endDtd();
             $oXmlWriter->startElement("modifications");
                   //ESCREVE O ARQUIVO
@@ -39,7 +39,7 @@ function escreveXML($sPath, $iRow, $sConteudo) {
             $oDomXml->load('files.xml');
             $oNoModifications   = $oDomXml->getElementsByTagName("modifications");
             $aModifications     = $oDomXml->getElementsByTagName("file");
-            //Para verificar se já existe modification no arquivo
+            //Se já existir modification no arquivo, só acrescenta
             $lPathExist = false;
             foreach ($aModifications as $oModification) {
               
@@ -61,15 +61,15 @@ function escreveXML($sPath, $iRow, $sConteudo) {
                               $oNewModification = $oDomXml->createElement("modification");
                     
                               $oRow = $oDomXml->createElement("row");
-                              $oRow->appendChild($oDomXml->createCDATASection($iRow));
+                              $oRow->appendChild($oDomXml->createCDATASection(utf8_encode($iRow)));
                               $oNewModification->appendChild($oRow);
                               
                               $oContent = $oDomXml->createElement("content");
-                              $oContent->appendChild($oDomXml->createCDATASection($sConteudo));
+                              $oContent->appendChild($oDomXml->createCDATASection(utf8_encode($sConteudo)));
                               $oNewModification->appendChild($oContent);
                               $oModification->appendChild($oNewModification);
                               
-                              $oDomXml->save(utf8_decode('files.xml'));
+                              $oDomXml->save('files.xml');
                         }
                   }
             }
@@ -92,12 +92,12 @@ function escreveXML($sPath, $iRow, $sConteudo) {
                   $oNewFile->appendChild($oNewModification);
                   
                   $oNoModifications->item(0)->appendChild($oNewFile);
-                  $oDomXml->save('files.xml');                  
+                  $oDomXml->save(utf8_decode('files.xml'));                  
             }
       }
 }
 
-function leXML() {
+function comparaArquivos() {
       $oDomXml  = new DOMDocument();
       $oDomXml->preserveWhiteSpace = false; 
       $oDomXml->formatOutput       = true;
@@ -123,7 +123,8 @@ function leXML() {
                                     $aContent = explode("\n", $modification->nodeValue);
                                     for ($i=0; $i < sizeof($aContent); $i++) { 
                                           if (strcmp(trim($aContent[$i]), trim($aFile[$iRow])) != 0) {
-                                                echo "Diferença na linha ".$iRow." do arquivo ".$sFilePath.".\n";
+						                                    $iRowAtual = $iRow+1;
+                                                echo "Diferença na linha ".$iRowAtual." do arquivo ".$sFilePath.".\n";
                                           }
                                           $iRow++;
                                     }
@@ -162,5 +163,5 @@ escreveXML("forms/db_frmliquidasemordem.php", 164, "            <fieldset class=
 //escreveXML("", -, "");
 //escreveXML("", -, "");
 //escreveXML("", -, "");
-leXML();
+comparaArquivos();
 ?>
