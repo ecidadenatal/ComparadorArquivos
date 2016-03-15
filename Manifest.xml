@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <plugin name="ComparadorArquivos" label="Comparador Arquivos" plugin-version="1.0" ecidade-version="2.3.39" id-modulo="116">
+   <id id="ComparadorArquivos"> </id>
+   <files>    
+    <!-- outro -->
+    <file name="db_comparadorDeArquivosModification.php"    path="/db_comparadorDeArquivosModification.php" />
+    <file name="db_cadastroComparadorArquivos_001.php"    path="/db_cadastroComparadorArquivos_001.php" />
+    <file name="db_frmdb_cadastroComparadorArquivos.php"    path="/forms/db_frmdb_cadastroComparadorArquivos.php" />
+   </files>
+  </plugin>
+</manifest>    
